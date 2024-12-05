@@ -7,6 +7,7 @@
   "license": "MIT",
   "type": "module",
   "types": "dist/cli.d.ts",
+  "repository": "https://github.com/AliReza99/i18extract.git",
   "files": [
     "dist"
   ],
