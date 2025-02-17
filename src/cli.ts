@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { execute } from '@arbz/execute';
+import { execa } from 'execa';
 import fse from 'fs-extra';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -120,14 +120,14 @@ async function main() {
         }
       }
 
-      await execute(`npx i18next-parser -s`);
+      await execa`npx i18next-parser -s`;
 
       await checkMissingTranslations({
         localesToTranslate: localesToTranslate,
         lintOutputDir: lintOutputDir,
       });
     } else {
-      await execute(`npx i18next-parser`);
+      await execa`npx i18next-parser`;
       await translateLocalesFiles({
         outputDir: localesOutputDir,
         defaultLocale: defaultLocale,

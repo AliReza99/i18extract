@@ -34,10 +34,10 @@
     "release": "npx release patch"
   },
   "dependencies": {
-    "@arbz/execute": "^1.0.3",
     "@vitalets/google-translate-api": "^9.2.0",
     "await-to-js": "^3.0.0",
     "commander": "^12.1.0",
+    "execa": "^9.5.2",
     "fs-extra": "^11.2.0",
     "i18next": "^23.5.1",
     "i18next-browser-languagedetector": "^7.1.0",
