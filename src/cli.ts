@@ -120,14 +120,23 @@ async function main() {
         }
       }
 
-      await execa`npx i18next-parser -s`;
+      await execa`npx i18next-parser -s`,
+        {
+          stdout: 'inherit',
+          stderr: 'inherit',
+        };
 
       await checkMissingTranslations({
         localesToTranslate: localesToTranslate,
         lintOutputDir: lintOutputDir,
       });
     } else {
-      await execa`npx i18next-parser`;
+      await execa`npx i18next-parser`,
+        {
+          stdout: 'inherit',
+          stderr: 'inherit',
+        };
+
       await translateLocalesFiles({
         outputDir: localesOutputDir,
         defaultLocale: defaultLocale,
