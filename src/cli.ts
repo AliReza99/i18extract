@@ -24,8 +24,8 @@ function cleanup() {
 
 function getRunner(): [string, string[]] {
   const pm = whichPMRuns();
-  if (pm?.version === 'pnpm') return ['pnpm', ['dlx']];
-  if (pm?.version === 'yarn') return ['yarn', ['dlx']];
+  if (pm?.name === 'pnpm') return ['pnpm', ['dlx']];
+  if (pm?.name === 'yarn') return ['yarn', ['dlx']];
   return ['npx', []]; // fallback to npm
 }
 
