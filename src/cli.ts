@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import { translateLocalesFiles } from './translateEmptyTranslations';
 import { checkMissingTranslations } from './checkMissingTranslations';
 import { to } from 'await-to-js';
+import whichPMRuns from 'which-pm-runs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,6 +20,18 @@ let configFileCreated = false;
 function cleanup() {
   if (!configFileCreated) return;
   fse.removeSync(`${currentDir}/i18next-parser.config.js`);
+}
+
+function getRunner(): [string, string[]] {
+  const pm = whichPMRuns();
+  if (pm?.version === 'pnpm') return ['pnpm', ['dlx']];
+  if (pm?.version === 'yarn') return ['yarn', ['dlx']];
+  return ['npx', []]; // fallback to npm
+}
+
+async function runI18nextParser(args: string[] = []) {
+  const [runner, runnerArgs] = getRunner();
+  await execa(runner, [...runnerArgs, 'i18next-parser', ...args], { stdio: 'inherit' });
 }
 
 const program = new Command();
@@ -120,21 +133,13 @@ async function main() {
         }
       }
 
-      await execa('npx', ['i18next-parser', '-s'], {
-        stdout: 'inherit',
-        stderr: 'inherit',
-      });
-
+      await runI18nextParser(['-s']);
       await checkMissingTranslations({
         localesToTranslate: localesToTranslate,
         lintOutputDir: lintOutputDir,
       });
     } else {
-      await execa('npx', ['i18next-parser'], {
-        stdout: 'inherit',
-        stderr: 'inherit',
-      });
-
+      await runI18nextParser();
       await translateLocalesFiles({
         outputDir: localesOutputDir,
         defaultLocale: defaultLocale,
